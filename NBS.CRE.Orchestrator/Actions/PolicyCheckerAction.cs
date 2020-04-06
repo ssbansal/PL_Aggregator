@@ -5,6 +5,9 @@ using System.Xml.Linq;
 
 namespace NBS.CRE.Orchestrator.Actions
 {
+    /// <summary>
+    /// PolicyCheckerAction
+    /// </summary>
     public class PolicyCheckerAction: AbstractAction
     {
         public override string ActionCode => "POLICY_CHECKER";

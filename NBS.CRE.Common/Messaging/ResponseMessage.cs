@@ -5,6 +5,9 @@ using System.Xml.Linq;
 
 namespace NBS.CRE.Common.Messaging
 {
+    /// <summary>
+    /// Response Message
+    /// </summary>
     [Serializable]
     public class ResponseMessage : ISerializable
     {
@@ -20,11 +23,21 @@ namespace NBS.CRE.Common.Messaging
             Error = error;
         }
 
+        /// <summary>
+        /// Helper method to create a success response.
+        /// </summary>
+        /// <param name="data">Response data.</param>
+        /// <returns><see cref="ResponseMessage"/> object.</returns>
         public static ResponseMessage CreateResponseOK(XElement data)
         {
             return new ResponseMessage(data);
         }
 
+        /// <summary>
+        /// Helper method to generate a failure response.
+        /// </summary>
+        /// <param name="ex">Exception object.</param>
+        /// <returns><see cref="ResponseMessage"/> object.</returns>
         public static ResponseMessage CreateResponseERROR(Exception ex)
         {
             return new ResponseMessage(ex);
@@ -60,8 +73,13 @@ namespace NBS.CRE.Common.Messaging
             info.AddValue("Data", xmlData);
         }
 
+        /// <value>Return <c>true</c> when response message is in error state.</value>
         public bool IsError { get; private set; }
+
+        /// <value>Exception object.</value>
         public Exception Error { get; private set; }
+
+        /// <value>XML data object.</value>
         public XElement Data { get; private set; }
     }
 }

@@ -40,6 +40,8 @@ namespace NBS.CRE.SoftQuote
             else
             {
                 decision.Value = "DECLINE";
+                decisionId.Value = "";
+                score.SetValue(0);
             }
 
             return result;

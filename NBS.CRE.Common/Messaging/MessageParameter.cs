@@ -2,6 +2,9 @@
 
 namespace NBS.CRE.Common.Messaging
 {
+    /// <summary>
+    /// Message Parameter
+    /// </summary>
     [Serializable]
     public class MessageParameter
     {
@@ -14,7 +17,10 @@ namespace NBS.CRE.Common.Messaging
             Value = value;
         }
 
+        /// <value>Parameter name.</value>
         public string Name { get; private set; }
+        
+        /// <value>Parameter value.</value>
         public object Value { get; private set; }
     }
 }

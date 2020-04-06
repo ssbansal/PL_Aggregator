@@ -5,6 +5,9 @@ using System.Xml.Linq;
 
 namespace NBS.CRE.Orchestrator.Actions
 {
+    /// <summary>
+    /// GetSoftQuoteAction
+    /// </summary>
     public class GetSoftQuoteAction: AbstractAction
     {
         public override string ActionCode => "GET_SOFT_QUOTE";

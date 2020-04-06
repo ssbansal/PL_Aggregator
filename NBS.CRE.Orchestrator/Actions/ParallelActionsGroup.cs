@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NBS.CRE.Orchestrator.Actions
 {
+    /// <summary>
+    /// Executes a group of actions in parallel.
+    /// </summary>
     public class ParallelActionsGroup : IActionWrapper
     {
         private List<AbstractAction> _actions = new List<AbstractAction>();
@@ -15,10 +18,18 @@ namespace NBS.CRE.Orchestrator.Actions
             ActionError = false;
             ErrorMessage = "";
         }
+
+        /// <value>Returns <c>true</c> if any of the actions fails to execute successfully.</value>
         public bool ActionError { get; private set; }
 
+        /// <value>Returns consolidated error messages from all failed actions.</value>
         public string ErrorMessage { get; private set; }
 
+        /// <summary>
+        /// Adds an action to the group for parallel execution.
+        /// </summary>
+        /// <param name="action"><see cref="AbstractAction"/> to add to the group.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the action being added already exists in the group.</exception>
         public void AddAction(AbstractAction action)
         {
             if(action == null)
@@ -35,6 +46,13 @@ namespace NBS.CRE.Orchestrator.Actions
             _actions.Add(action);
             
         }
+
+        /// <summary>
+        /// Executes the actions in parallel.
+        /// </summary>
+        /// <param name="serviceProvider">Dependency injection container for resolving services.</param>
+        /// <param name="context">Scheduler context for executing actions.</param>
+        /// <returns>A single <c>Task</c> object that completes when all the action finish execution.</returns>
         public async Task Execute(IServiceProvider serviceProvider, ISchedulerContext context)
         {
             List<Task> actionTasks = new List<Task>();
@@ -59,6 +77,10 @@ namespace NBS.CRE.Orchestrator.Actions
             }
         }
 
+        /// <summary>
+        /// Gets wrapped actions instances.
+        /// </summary>
+        /// <returns>Readonly collection of <see cref="AbstractAction"/> instances.</returns>
         public IReadOnlyCollection<AbstractAction> GetWrappedActions()
         {
             return _actions.AsReadOnly();

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NBS.CRE.Orchestrator.Actions
 {
+    /// <summary>
+    /// Interface used by the <see cref="Scheduler"/> to build the execution logic.
+    /// </summary>
     public interface IActionWrapper
     {
         bool ActionError { get; }

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace NBS.CRE.Common.RPC
 {
+    /// <summary>
+    /// RpcClient implements Request-Reply pattern over RabbitMQ.
+    /// </summary>
     public class RpcClient : IDisposable
     {
         private bool disposed = false;
@@ -35,6 +38,10 @@ namespace NBS.CRE.Common.RPC
                 autoAck: true,
                 consumer: consumer);
         }
+
+        /// <summary>
+        /// Callback method for receiving message.
+        /// </summary>
         private void Consumer_Received(object sender, BasicDeliverEventArgs e)
         {
             var correlationId = e.BasicProperties.CorrelationId;
@@ -58,6 +65,14 @@ namespace NBS.CRE.Common.RPC
                 }
             }
         }
+
+        /// <summary>
+        /// Publish message to the message broker.
+        /// </summary>
+        /// <param name="request">Request object instance.</param>
+        /// <param name="secondsTimeout">Number of seconds to wait for action completion.</param>
+        /// <returns>Response generated from remote action execution.</returns>
+        /// <exception cref="TimeoutException">Exception raised when the action does not completes before the timeout period.</exception>
         public Task<ResponseMessage> Execute(RequestMessage request, int secondsTimeout = 15)
         {
             var correlationId = Guid.NewGuid().ToString("N");
@@ -93,6 +108,8 @@ namespace NBS.CRE.Common.RPC
 
             return completionSource.Task;
         }
+
+        /// <value>Reply-To queue name.</value>
         private string ReplyQueueName
         {
             get

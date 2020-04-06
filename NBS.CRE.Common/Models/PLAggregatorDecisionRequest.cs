@@ -4,6 +4,9 @@ using System.Text;
 
 namespace NBS.CRE.Common.Models
 {
+    /// <summary>
+    /// PL Aggregator Decision Request.
+    /// </summary>
     public class PLAggregatorDecisionRequest
     {
         public string FirstName { get; set; }

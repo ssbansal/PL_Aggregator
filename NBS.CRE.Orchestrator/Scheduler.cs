@@ -8,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace NBS.CRE.Orchestrator
 {
+    /// <summary>
+    /// Scheduler Interface
+    /// </summary>
     public interface IScheduler
     {
         Task<RESPONSE> Execute<REQUEST, RESPONSE>(REQUEST request);
         void Shutdown();
     }
+
+    /// <summary>
+    /// Scheduler
+    /// </summary>
     public class Scheduler : IScheduler
     {
         private IServiceProvider _serviceProvider;
@@ -23,6 +30,11 @@ namespace NBS.CRE.Orchestrator
             ConfigureServices(serviceCollection);
             _serviceProvider = serviceCollection.BuildServiceProvider();
         }
+
+        /// <summary>
+        /// Configure the dependency injection container.
+        /// </summary>
+        /// <param name="serviceCollection">Service collection of the injection container.</param>
         private void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IConnection>(provider => {
@@ -46,6 +58,9 @@ namespace NBS.CRE.Orchestrator
 
         }
 
+        /// <summary>
+        /// Performs resource cleanup. Closes RabbitMQ connection.
+        /// </summary>
         public void Shutdown()
         {
             var connection = _serviceProvider.GetService<IConnection>();
@@ -55,6 +70,14 @@ namespace NBS.CRE.Orchestrator
                 connection.Dispose();
             }
         }
+
+        /// <summary>
+        /// Starting point for the orchestration.
+        /// </summary>
+        /// <typeparam name="REQUEST">Request model.</typeparam>
+        /// <typeparam name="RESPONSE">Response model.</typeparam>
+        /// <param name="request">Request object instance.</param>
+        /// <returns><c>Task</c> that completes when the orchestration finishes.</returns>
         public async Task<RESPONSE> Execute<REQUEST, RESPONSE>(REQUEST request)
         {
             Type[] typeArgs = { typeof(REQUEST), typeof(RESPONSE) };

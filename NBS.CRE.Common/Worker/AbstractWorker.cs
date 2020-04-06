@@ -7,15 +7,34 @@ using System.Xml.Linq;
 
 namespace NBS.CRE.Common.Worker
 {
+    /// <summary>
+    /// Abstract base class for creating Remote Workers
+    /// </summary>
     public abstract class AbstractWorker
     {
         public AbstractWorker(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }
+
+        /// <value>Gets dependency injection container.</value>
         protected IServiceProvider ServiceProvider { get; private set; }
+
+        /// <value>Gets the message routing key.</value>
         protected abstract string ActionCode { get; }
+
+        /// <summary>
+        /// Process the request message.
+        /// </summary>
+        /// <param name="request">Message request details.</param>
+        /// <returns>XML response data.</returns>
         protected abstract XElement Process(RequestMessage request);
+
+        /// <summary>
+        /// Run the worker process. Creates a connection to the RabbitMQ broker and processes the received messaged.
+        /// </summary>
+        /// <param name="autoResetEvent">Reset event to signals the method to exit.</param>
+        /// <exception cref="InvalidOperationException">Thrown if the RabbitMQ connection cannot be resolved.</exception>
         public void Run(AutoResetEvent autoResetEvent)
         {
             IConnection connection = ServiceProvider.GetService(typeof(IConnection)) as IConnection;

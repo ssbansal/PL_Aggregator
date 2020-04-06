@@ -8,6 +8,9 @@ using System.Globalization;
 
 namespace NBS.CRE.Orchestrator.Mappers
 {
+    /// <summary>
+    /// Mapper for mapping <see cref="PLAggregatorDecisionRequest"/> to <see cref="PLAggregatorDecisionResponse"/>.
+    /// </summary>
     public class PLAggregatorDecisionMapper : AbstractMapper<PLAggregatorDecisionRequest, PLAggregatorDecisionResponse>
     {
         private AbstractAction policyCheckerAction;
