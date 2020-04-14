@@ -44,7 +44,19 @@ namespace NBS.CRE.Orchestrator
                     hostName = "localhost";
                 }
 
-                var factory = new ConnectionFactory() { HostName = hostName, UserName = "guest", Password = "guest" };
+                string userName = Environment.GetEnvironmentVariable("RMQ_USER");
+                if (String.IsNullOrEmpty(userName))
+                {
+                    userName = "guest";
+                }
+
+                string password = Environment.GetEnvironmentVariable("RMQ_PASSWORD");
+                if (String.IsNullOrEmpty(password))
+                {
+                    password = "guest";
+                }
+
+                var factory = new ConnectionFactory() { HostName = hostName, UserName = userName, Password = password };
                 return factory.CreateConnection();
             });
 
