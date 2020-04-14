@@ -26,3 +26,35 @@ spec:
               value: "80"
             - name: RMQ_HOST
               value: "rabbitmq"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pla-rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pla-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: pla-rabbitmq
+    spec:
+      containers:
+        - image: docker.io/rabbitmq:latest
+          name: pla-rabbitmq-container
+          ports:
+             - containerPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: pla-rabbitmq
+  ports:
+  - protocol: TCP
+    port: 5672
+    targetPort: 5672
