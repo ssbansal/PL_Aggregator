@@ -8,5 +8,5 @@ RUN dotnet publish -c Release -o out
 FROM build-env
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
-COPY --from=build-env . ./
+COPY --from=build-env /out ./
 ENTRYPOINT ["dotnet", "--version"]
