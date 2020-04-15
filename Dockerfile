@@ -5,7 +5,8 @@ COPY . ./
 RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
+FROM build-env
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
-COPY --from=build-env /app/out /app
 WORKDIR /app
+COPY --from=build-env /app/out /app
 ENTRYPOINT ["dotnet", "--version"]
