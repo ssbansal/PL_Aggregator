@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - image: docker.io/ssbansal/pl-aggregator:latest
+          imagePullPolicy: Always
           name: pla-api-gateway-container
           workingDir: /app
           command: [dotnet, NBS.CRE.APIGateway.dll]
@@ -24,6 +25,54 @@ spec:
               value: "0.0.0.0"
             - name: UI_PORT
               value: "80"
+            - name: RMQ_HOST
+              value: "rabbitmq"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pla-policy-checker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pla-policy-checker
+  template:
+    metadata:
+      labels:
+        app: pla-policy-checker
+    spec:
+      containers:
+        - image: docker.io/ssbansal/pl-aggregator:latest
+          imagePullPolicy: Always
+          name: pla-policy-checker-container
+          workingDir: /app
+          command: [dotnet, NBS.CRE.PolicyChecker.dll]
+          env:
+            - name: RMQ_HOST
+              value: "rabbitmq"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pla-soft-quote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pla-soft-quote
+  template:
+    metadata:
+      labels:
+        app: pla-soft-quote
+    spec:
+      containers:
+        - image: docker.io/ssbansal/pl-aggregator:latest
+          imagePullPolicy: Always
+          name: pla-soft-quote-container
+          workingDir: /app
+          command: [dotnet, NBS.CRE.SoftQuote.dll]
+          env:
             - name: RMQ_HOST
               value: "rabbitmq"
 ---

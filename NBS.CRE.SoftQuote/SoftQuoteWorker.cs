@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Globalization;
+using System.Threading;
 
 namespace NBS.CRE.SoftQuote
 {
@@ -43,6 +44,9 @@ namespace NBS.CRE.SoftQuote
                 decisionId.Value = "";
                 score.SetValue(0);
             }
+
+            // Add 1 second delay
+            Thread.Sleep(1000);
 
             return result;
         }
