@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY . ./
 RUN dotnet restore
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app/out
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
