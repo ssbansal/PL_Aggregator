@@ -80,6 +80,7 @@ namespace NBS.CRE.Common.RPC
 
             var bytes = SerializationHelper.ToBytes(request);
             var props = channel.CreateBasicProperties();
+            props.DeliveryMode = 2;
             props.CorrelationId = correlationId;
             props.ReplyTo = ReplyQueueName;
 
