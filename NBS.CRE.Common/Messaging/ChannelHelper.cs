@@ -20,7 +20,7 @@ namespace NBS.CRE.Common.Messaging
                 throw new ArgumentNullException(nameof(queueName));
 
             channel.QueueDeclare(queue: queueName,
-                                 durable: true,
+                                 durable: false,
                                  exclusive: exclusive,
                                  autoDelete: true,
                                  arguments: null);
