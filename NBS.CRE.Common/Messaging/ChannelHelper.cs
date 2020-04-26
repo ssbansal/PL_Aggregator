@@ -24,8 +24,6 @@ namespace NBS.CRE.Common.Messaging
                                  exclusive: exclusive,
                                  autoDelete: true,
                                  arguments: null);
-
-            channel.ConfirmSelect();
         }
     }
 }
