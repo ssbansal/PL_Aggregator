@@ -37,6 +37,7 @@ namespace NBS.CRE.Common.RPC
             channel.BasicConsume(queue: ReplyQueueName,
                 autoAck: true,
                 consumer: consumer);
+
         }
 
         /// <summary>
@@ -95,16 +96,24 @@ namespace NBS.CRE.Common.RPC
                 basicProperties: props,
                 body: bytes);
 
-            Task.WhenAny(completionSource.Task, Task.Delay(secondsTimeout * 1000)).ContinueWith(t =>
+            if (channel.WaitForConfirms(new TimeSpan(0, 0, secondsTimeout * 1000)))
             {
-                if (!completionSource.Task.IsCompleted)
+
+                Task.WhenAny(completionSource.Task, Task.Delay(secondsTimeout * 1000)).ContinueWith(t =>
                 {
-                    if (tasksDict.TryRemove(correlationId, out TaskCompletionSource<ResponseMessage> source))
+                    if (!completionSource.Task.IsCompleted)
                     {
-                        source.SetException(new TimeoutException());
+                        if (tasksDict.TryRemove(correlationId, out TaskCompletionSource<ResponseMessage> source))
+                        {
+                            source.SetException(new TimeoutException());
+                        }
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                completionSource.SetException(new TimeoutException());
+            }
 
             return completionSource.Task;
         }
