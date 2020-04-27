@@ -12,7 +12,7 @@ namespace NBS.CRE.Orchestrator.Actions
     {
         public override string ActionCode => "GET_SOFT_QUOTE";
         public override string Name => "Get Soft Quote";
-        public override int SecondsTimeout => 10;
+        public override int SecondsTimeout => 15;
  
     }
 }

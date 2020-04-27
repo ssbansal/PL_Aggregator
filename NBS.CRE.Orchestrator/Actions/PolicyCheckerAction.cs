@@ -12,5 +12,6 @@ namespace NBS.CRE.Orchestrator.Actions
     {
         public override string ActionCode => "POLICY_CHECKER";
         public override string Name => "Policy Checker";
+        public override int SecondsTimeout => 15;
     }
 }
