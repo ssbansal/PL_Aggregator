@@ -1,5 +1,6 @@
 ﻿using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 
 namespace NBS.CRE.Common.Messaging
 {
@@ -19,11 +20,18 @@ namespace NBS.CRE.Common.Messaging
             if (String.IsNullOrEmpty(queueName))
                 throw new ArgumentNullException(nameof(queueName));
 
+            var args = new Dictionary<string, object>();
+            if (exclusive)
+            {
+                args.Add("x-expires", 1000 * 60 * 5);
+            }
+
             channel.QueueDeclare(queue: queueName,
                                  durable: false,
-                                 exclusive: exclusive,
+                                 exclusive: false,
+                                 //exclusive: exclusive,
                                  autoDelete: true,
-                                 arguments: null);
+                                 arguments: args);
         }
     }
 }
