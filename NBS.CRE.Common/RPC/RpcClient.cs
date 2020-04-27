@@ -96,8 +96,6 @@ namespace NBS.CRE.Common.RPC
                 basicProperties: props,
                 body: bytes);
 
-            channel.WaitForConfirms();
-
             Task.WhenAny(completionSource.Task, Task.Delay(secondsTimeout * 1000)).ContinueWith(t =>
             {
                 if (!completionSource.Task.IsCompleted)
